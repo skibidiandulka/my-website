@@ -2,6 +2,7 @@
 const buddy = document.getElementById("buddy");
 const gameContainer = document.getElementById("game-container");
 const hitSound = document.getElementById("hit-sound");
+const hitSound2 = new Audio('pictures/zvuk2.mp3'); // Nový zvuk
 
 // Vytvoření kladiva jako kurzoru
 const customCursor = document.createElement("img");
@@ -25,17 +26,26 @@ document.addEventListener("mousemove", (event) => {
 
 // Kliknutí na buddyho
 buddy.addEventListener("click", () => {
-    // Změna obrázku buddyho
+    // Změna obrázku buddyho na jindrich2
     buddy.src = "pictures/jindrich2.png";
 
     // Zatřesení buddyho
     shakeBuddy();
 
-    // Přehraj zvuk
+    // Přehraj zvuk1
     hitSound.currentTime = 0;
     hitSound.play();
 
     // Otočení kladiva
     customCursor.style.transform = "rotate(90deg)";
     setTimeout(() => customCursor.style.transform = "rotate(0deg)", 200);
+
+    // Přehraj druhý zvuk
+    hitSound2.currentTime = 0;
+    hitSound2.play();
+
+    // Vrácení obrázku po 1-2 sekundách
+    setTimeout(() => {
+        buddy.src = "pictures/jindrich.png"; // Vrať původní obrázek
+    }, Math.random() * 1000 + 1000); // Náhodný čas mezi 1 a 2 sekundami
 });
