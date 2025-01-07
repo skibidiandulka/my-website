@@ -47,5 +47,5 @@ buddy.addEventListener("click", () => {
     // Vrácení obrázku po 1-2 sekundách
     setTimeout(() => {
         buddy.src = "pictures/jindrich.png"; // Vrať původní obrázek
-    }, Math.random() * 1000 + 1000); // Náhodný čas mezi 1 a 2 sekundami
+    }, Math.random() * 500 + 1); // Náhodný čas mezi 1 a 2 sekundami
 });
