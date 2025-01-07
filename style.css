@@ -1,0 +1,30 @@
+body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    cursor: none; /* Skryje kurzor myši */
+    background-color: #f0f0f0;
+}
+
+#game-container {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#buddy {
+    position: absolute;
+    transition: transform 0.1s; /* Efekt třesení */
+}
+
+#custom-cursor {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    pointer-events: none; /* Zajistí, že kurzor nebude rušit interakce */
+    transform-origin: center;
+    transform: rotate(0deg); /* Počáteční rotace kladiva */
+}
