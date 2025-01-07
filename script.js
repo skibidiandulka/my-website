@@ -9,6 +9,14 @@ customCursor.src = "pictures/kladivo.png";
 customCursor.id = "custom-cursor";
 document.body.appendChild(customCursor);
 
+// Funkce pro náhodný směr třesení
+function shakeBuddy() {
+    const randomX = (Math.random() - 0.5) * 20; // Náhodný pohyb X
+    const randomY = (Math.random() - 0.5) * 20; // Náhodný pohyb Y
+    buddy.style.transform = `translate(${randomX}px, ${randomY}px)`;
+    setTimeout(() => buddy.style.transform = "translate(0, 0)", 100);
+}
+
 // Aktualizace pozice kladiva
 document.addEventListener("mousemove", (event) => {
     customCursor.style.left = `${event.pageX - 25}px`;
@@ -17,10 +25,11 @@ document.addEventListener("mousemove", (event) => {
 
 // Kliknutí na buddyho
 buddy.addEventListener("click", () => {
+    // Změna obrázku buddyho
+    buddy.src = "pictures/jindrich2.png";
+
     // Zatřesení buddyho
-    buddy.style.transform = "translateX(10px)";
-    setTimeout(() => buddy.style.transform = "translateX(-10px)", 50);
-    setTimeout(() => buddy.style.transform = "translateX(0)", 100);
+    shakeBuddy();
 
     // Přehraj zvuk
     hitSound.currentTime = 0;
