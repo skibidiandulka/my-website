@@ -28,3 +28,9 @@ body {
     transform-origin: center;
     transform: rotate(0deg); /* Počáteční rotace kladiva */
 }
+#counter {
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 5px 10px;
+    border-radius: 5px;
+    box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
+}
