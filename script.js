@@ -10,32 +10,12 @@ customCursor.src = "pictures/kladivo.png";
 customCursor.id = "custom-cursor";
 document.body.appendChild(customCursor);
 
-// Počítadlo kliknutí
-let clickCount = 0;
-const counterDisplay = document.createElement("div");
-counterDisplay.id = "counter";
-counterDisplay.style.position = "absolute";
-counterDisplay.style.top = "10px";
-counterDisplay.style.left = "10px";
-counterDisplay.style.fontSize = "24px";
-counterDisplay.style.fontFamily = "Arial, sans-serif";
-counterDisplay.style.color = "black";
-counterDisplay.textContent = `Kliknutí: ${clickCount}`;
-document.body.appendChild(counterDisplay);
-
-// Funkce pro intenzivní třesení
-function intenseShakeBuddy() {
-    let shakeCount = 10; // Počet třesení
-    const interval = setInterval(() => {
-        const randomX = (Math.random() - 0.5) * 40; // Větší pohyb X
-        const randomY = (Math.random() - 0.5) * 40; // Větší pohyb Y
-        buddy.style.transform = `translate(${randomX}px, ${randomY}px)`;
-        shakeCount--;
-        if (shakeCount <= 0) {
-            clearInterval(interval); // Zastaví třesení
-            buddy.style.transform = "translate(0, 0)";
-        }
-    }, 50); // Rychlejší třesení
+// Funkce pro náhodný směr třesení
+function shakeBuddy() {
+    const randomX = (Math.random() - 0.5) * 20; // Náhodný pohyb X
+    const randomY = (Math.random() - 0.5) * 20; // Náhodný pohyb Y
+    buddy.style.transform = `translate(${randomX}px, ${randomY}px)`;
+    setTimeout(() => buddy.style.transform = "translate(0, 0)", 100);
 }
 
 // Aktualizace pozice kladiva
@@ -46,15 +26,11 @@ document.addEventListener("mousemove", (event) => {
 
 // Kliknutí na buddyho
 buddy.addEventListener("click", () => {
-    // Zvýšení počítadla kliknutí
-    clickCount++;
-    counterDisplay.textContent = `Kliknutí: ${clickCount}`;
-
     // Změna obrázku buddyho na jindrich2
     buddy.src = "pictures/jindrich2.png";
 
-    // Intenzivní třesení buddyho
-    intenseShakeBuddy();
+    // Zatřesení buddyho
+    shakeBuddy();
 
     // Přehraj zvuk1
     hitSound.currentTime = 0;
@@ -73,4 +49,3 @@ buddy.addEventListener("click", () => {
         buddy.src = "pictures/jindrich.png"; // Vrať původní obrázek
     }, Math.random() * 1000 + 1000); // Náhodný čas mezi 1 a 2 sekundami
 });
-
