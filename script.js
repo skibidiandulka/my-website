@@ -2,7 +2,7 @@
 const buddy = document.getElementById("buddy");
 const gameContainer = document.getElementById("game-container");
 const hitSound = document.getElementById("hit-sound");
-const hitSound2 = new Audio('pictures/zvuk2.mp3'); // Zvuk při každém kliknutí
+const hitSound2 = new Audio("pictures/zvuk2.mp3"); // Zvuk při každém kliknutí
 
 // Počítadlo kliknutí
 let clickCount = 0;
@@ -43,20 +43,32 @@ document.addEventListener("mousemove", (event) => {
 });
 
 // Rychlost pohybu buddyho
-let speed = 5;
+let speed = 2; // Základní rychlost
 
-// Funkce pro přesun buddyho na náhodné místo
-function moveBuddyAwayFromCursor() {
-    const containerWidth = gameContainer.offsetWidth - buddy.offsetWidth;
-    const containerHeight = gameContainer.offsetHeight - buddy.offsetHeight;
+// Funkce pro pohyb buddyho
+function moveBuddyAwayFromCursor(event) {
+    const cursorX = event.clientX;
+    const cursorY = event.clientY;
 
-    // Náhodná pozice
-    const randomX = Math.random() * containerWidth;
-    const randomY = Math.random() * containerHeight;
+    // Současná pozice buddyho
+    const buddyRect = buddy.getBoundingClientRect();
+    const buddyX = buddyRect.left + buddyRect.width / 2;
+    const buddyY = buddyRect.top + buddyRect.height / 2;
 
-    // Nastavení pozice
-    buddy.style.left = `${randomX}px`;
-    buddy.style.top = `${randomY}px`;
+    // Směr od kurzoru
+    const deltaX = buddyX - cursorX;
+    const deltaY = buddyY - cursorY;
+    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+
+    // Výpočet nových souřadnic
+    if (distance > 0) {
+        const moveX = (deltaX / distance) * speed;
+        const moveY = (deltaY / distance) * speed;
+
+        // Aktualizace pozice buddyho
+        buddy.style.left = `${buddy.offsetLeft + moveX}px`;
+        buddy.style.top = `${buddy.offsetTop + moveY}px`;
+    }
 }
 
 // Funkce pro intenzivní třesení
@@ -104,6 +116,9 @@ buddy.addEventListener("click", () => {
         buddy.src = "pictures/jindrich.png"; // Vrať původní obrázek
     }, Math.random() * 1000 + 1000);
 
+    // Zvýšení rychlosti
+    speed += 0.2; // Zrychlení při každém kliknutí
+
     // Kontrola, zda má být odemknuta nová zbraň
     const nextWeaponIndex = currentWeaponIndex + 1;
     if (nextWeaponIndex < weapons.length && clickCount >= weapons[nextWeaponIndex].unlockAt) {
@@ -111,10 +126,6 @@ buddy.addEventListener("click", () => {
         weaponDisplay.textContent = `Zbraň: ${weapons[currentWeaponIndex].name}`;
         customCursor.src = weapons[currentWeaponIndex].img;
     }
-
-    // Zvýšení rychlosti a přesun buddyho
-    speed += 0.1; // Zrychlení
-    moveBuddyAwayFromCursor();
 });
 
 // Počítadlo kliknutí
@@ -129,5 +140,10 @@ counterDisplay.style.color = "black";
 counterDisplay.textContent = `Kliknutí: ${clickCount}`;
 document.body.appendChild(counterDisplay);
 
+// Poslech kurzoru pro pohyb buddyho
+gameContainer.addEventListener("mousemove", moveBuddyAwayFromCursor);
+
 // Inicializace buddyho
-moveBuddyAwayFromCursor();
+buddy.style.position = "absolute";
+buddy.style.left = "50%";
+buddy.style.top = "50%";
