@@ -43,32 +43,36 @@ document.addEventListener("mousemove", (event) => {
 });
 
 // Rychlost pohybu buddyho
-let speed = 2; // Základní rychlost
+let speed = 1; // Základní rychlost
+let moveInterval;
 
-// Funkce pro pohyb buddyho
+// Funkce pro pohyb buddyho směrem od kurzoru
 function moveBuddyAwayFromCursor(event) {
     const cursorX = event.clientX;
     const cursorY = event.clientY;
 
-    // Současná pozice buddyho
-    const buddyRect = buddy.getBoundingClientRect();
-    const buddyX = buddyRect.left + buddyRect.width / 2;
-    const buddyY = buddyRect.top + buddyRect.height / 2;
+    // Spuštění intervalového pohybu
+    clearInterval(moveInterval);
+    moveInterval = setInterval(() => {
+        const buddyRect = buddy.getBoundingClientRect();
+        const buddyX = buddyRect.left + buddyRect.width / 2;
+        const buddyY = buddyRect.top + buddyRect.height / 2;
 
-    // Směr od kurzoru
-    const deltaX = buddyX - cursorX;
-    const deltaY = buddyY - cursorY;
-    const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+        // Vzdálenost a směr pohybu
+        const deltaX = buddyX - cursorX;
+        const deltaY = buddyY - cursorY;
+        const distance = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
 
-    // Výpočet nových souřadnic
-    if (distance > 0) {
-        const moveX = (deltaX / distance) * speed;
-        const moveY = (deltaY / distance) * speed;
-
-        // Aktualizace pozice buddyho
-        buddy.style.left = `${buddy.offsetLeft + moveX}px`;
-        buddy.style.top = `${buddy.offsetTop + moveY}px`;
-    }
+        if (distance > 50) {
+            // Pohyb směrem od kurzoru
+            const moveX = (deltaX / distance) * speed;
+            const moveY = (deltaY / distance) * speed;
+            buddy.style.left = `${buddy.offsetLeft + moveX}px`;
+            buddy.style.top = `${buddy.offsetTop + moveY}px`;
+        } else {
+            clearInterval(moveInterval); // Zastaví pohyb, pokud je dostatečně daleko
+        }
+    }, 20); // Interval aktualizace pohybu
 }
 
 // Funkce pro intenzivní třesení
