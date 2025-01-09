@@ -2,7 +2,7 @@
 const buddy = document.getElementById("buddy");
 const gameContainer = document.getElementById("game-container");
 const hitSound = document.getElementById("hit-sound");
-const hitSound2 = new Audio('pictures/zvuk2.mp3'); // Nový zvuk
+const hitSound2 = new Audio('pictures/zvuk2.mp3'); // Zvuk při každém kliknutí
 
 // Počítadlo kliknutí
 let clickCount = 0;
@@ -42,6 +42,23 @@ document.addEventListener("mousemove", (event) => {
     customCursor.style.top = `${event.pageY - 25}px`;
 });
 
+// Rychlost pohybu buddyho
+let speed = 5;
+
+// Funkce pro přesun buddyho na náhodné místo
+function moveBuddyAwayFromCursor() {
+    const containerWidth = gameContainer.offsetWidth - buddy.offsetWidth;
+    const containerHeight = gameContainer.offsetHeight - buddy.offsetHeight;
+
+    // Náhodná pozice
+    const randomX = Math.random() * containerWidth;
+    const randomY = Math.random() * containerHeight;
+
+    // Nastavení pozice
+    buddy.style.left = `${randomX}px`;
+    buddy.style.top = `${randomY}px`;
+}
+
 // Funkce pro intenzivní třesení
 function intenseShakeBuddy() {
     let shakeCount = 10; // Počet třesení
@@ -69,7 +86,11 @@ buddy.addEventListener("click", () => {
     // Intenzivní třesení buddyho
     intenseShakeBuddy();
 
-    // Přehraj aktuální zvuk
+    // Přehraj vždy zvuk2
+    hitSound2.currentTime = 0;
+    hitSound2.play();
+
+    // Přehraj aktuální zvuk zbraně
     const currentWeaponSound = new Audio(weapons[currentWeaponIndex].sound);
     currentWeaponSound.currentTime = 0;
     currentWeaponSound.play();
@@ -90,6 +111,10 @@ buddy.addEventListener("click", () => {
         weaponDisplay.textContent = `Zbraň: ${weapons[currentWeaponIndex].name}`;
         customCursor.src = weapons[currentWeaponIndex].img;
     }
+
+    // Zvýšení rychlosti a přesun buddyho
+    speed += 0.1; // Zrychlení
+    moveBuddyAwayFromCursor();
 });
 
 // Počítadlo kliknutí
@@ -103,3 +128,6 @@ counterDisplay.style.fontFamily = "Arial, sans-serif";
 counterDisplay.style.color = "black";
 counterDisplay.textContent = `Kliknutí: ${clickCount}`;
 document.body.appendChild(counterDisplay);
+
+// Inicializace buddyho
+moveBuddyAwayFromCursor();
